@@ -28,15 +28,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  const body = loading ? (
-    <div className="flex items-center justify-center h-screen bg-background">
-      <Spinner size="large" />
-    </div>
-  ) : children;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-background">
+        <Spinner size="large" />
+      </div>
+    );
+  }
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {body}
+    <AuthContext.Provider value={{ user, loading: false }}>
+      {children}
     </AuthContext.Provider>
   );
 };
