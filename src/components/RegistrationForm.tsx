@@ -1,7 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
-import { useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { RegistrationState, registerStudent } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -50,7 +50,7 @@ export default function RegistrationForm() {
 
 
 function RegistrationFormCore({ onReset }: { onReset: () => void }) {
-  const [formState, formAction] = useFormState<RegistrationState, FormData>(
+  const [formState, formAction] = useActionState<RegistrationState, FormData>(
     registerStudent,
     { message: null, errors: {}, success: false }
   );
