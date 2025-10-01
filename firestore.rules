@@ -2,13 +2,11 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /registrations/{registrationId} {
-      allow read: if request.auth != null;
-      allow write;
-    }
-
+    // Allow read and write access to all documents
+    // for development purposes.
+    // WARNING: This is insecure for production.
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if true;
     }
   }
 }
