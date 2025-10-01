@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { Logo } from './Logo';
+import { Button } from './ui/button';
+import { Shield } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -15,9 +17,17 @@ export default function Header() {
               <p className="text-xs text-muted-foreground">Registration Portal</p>
             </div>
           </Link>
-          <div className="text-right hidden sm:block">
-            <h2 className="text-lg font-semibold font-headline text-accent">6th Edition TECHNEXus</h2>
-            <p className="text-sm text-muted-foreground">Upskilling & Learning for Students</p>
+          <div className="flex items-center gap-4">
+            <div className="text-right hidden sm:block">
+              <h2 className="text-lg font-semibold font-headline text-accent">6th Edition TECHNEXus</h2>
+              <p className="text-sm text-muted-foreground">Upskilling & Learning for Students</p>
+            </div>
+            <Button asChild variant="outline">
+                <Link href="/admin">
+                    <Shield className="mr-2 h-4 w-4" />
+                    Admin
+                </Link>
+            </Button>
           </div>
         </div>
       </div>
