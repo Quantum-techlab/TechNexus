@@ -91,7 +91,7 @@ export default function Home() {
         </motion.div>
       </main>
       <footer className="w-full py-6 text-center text-muted-foreground text-sm">
-        <p className="mb-2">For any inquiries or issues with registration, please call or send a message on WhatsApp to <strong className="font-bold text-primary">08160805643</strong>.</p>
+        <p className="mb-2">For inquiries, call or message via WhatsApp: <a href="https://wa.me/2348160805643" target="_blank" rel="noopener noreferrer" className="font-bold text-primary hover:underline">08160805643</a>.</p>
         <p>&copy; {new Date().getFullYear()} Department of Information Technology, University of Ilorin.</p>
       </footer>
     </div>

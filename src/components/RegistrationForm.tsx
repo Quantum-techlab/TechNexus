@@ -14,8 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal, User, AtSign, Building, Hash, Phone, UploadCloud, BookOpenCheck, CheckCircle, UserPlus } from "lucide-react";
-import { CourseRecommender } from "./CourseRecommender";
+import { Terminal, User, AtSign, GraduationCap, Hash, Phone, UploadCloud, BookOpenCheck, CheckCircle, UserPlus, BookCopy } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 import { Label } from "./ui/label";
 import { motion } from "framer-motion";
@@ -122,8 +121,6 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
         <p className="text-muted-foreground">Join the 7th Edition of TECHNEXus</p>
       </div>
 
-      <CourseRecommender onCourseRecommended={setCourse} />
-
       <motion.form 
         ref={formRef} 
         action={formAction} 
@@ -142,7 +139,7 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
         
         <motion.div variants={itemVariants} className="space-y-2">
             <div className="relative">
-                <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input name="department" placeholder="Department" className="pl-10" />
             </div>
             {formState?.errors?.department && <p className="text-sm text-destructive">{formState.errors.department.join(', ')}</p>}
@@ -175,7 +172,12 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
         <motion.div variants={itemVariants} className="space-y-2">
             <Select name="course" onValueChange={setCourse} value={course}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Select a Tech Course" />
+                  <div className="flex items-center gap-3 pl-1 text-muted-foreground">
+                    <BookCopy className="h-5 w-5" />
+                    <span className={!course ? 'text-muted-foreground' : ''}>
+                      {course ? course : 'Select a Tech Course'}
+                    </span>
+                  </div>
                 </SelectTrigger>
                 <SelectContent>
                     {TECH_COURSES.map((course) => (
