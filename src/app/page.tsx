@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import RegistrationForm from '@/components/RegistrationForm';
 import { Card, CardContent } from '@/components/ui/card';
 import { Lightbulb, Briefcase, TrendingUp, Laptop, Users, Award } from 'lucide-react';
+import AnimatedCounter from '@/components/AnimatedCounter';
 
 
 export default function Home() {
@@ -41,9 +42,18 @@ export default function Home() {
         >
           <motion.div variants={itemVariants} className="mb-8 text-foreground p-6 rounded-lg bg-card border shadow-sm">
             <h2 className="text-2xl font-bold font-headline text-primary mb-4 flex items-center gap-2"><Award /> A Legacy of Success: The 7th Edition</h2>
-            <p className="text-muted-foreground">
-              Welcome to the 7th Edition of TECHNEXus! For years, we have been dedicated to empowering students with the most in-demand tech skills. We are proud to have successfully trained and certified hundreds of students who have gone on to achieve great things in the tech industry. Join a legacy of excellence and start your journey today.
-            </p>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="md:w-2/3">
+                <p className="text-muted-foreground">
+                  Welcome to the 7th Edition of TECHNEXus! For years, we have been dedicated to empowering students with the most in-demand tech skills. We are proud to have successfully trained and certified hundreds of students who have gone on to achieve great things in the tech industry. Join a legacy of excellence and start your journey today.
+                </p>
+              </div>
+              <div className="md:w-1/3 flex flex-col items-center text-center p-4 bg-primary/10 rounded-lg">
+                <p className="text-sm font-semibold text-primary">Students Trained</p>
+                <AnimatedCounter from={500} to={7587} />
+                <p className="text-xs text-muted-foreground">and counting...</p>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div variants={itemVariants} className="mb-8 text-foreground p-6 rounded-lg bg-card border shadow-sm">
