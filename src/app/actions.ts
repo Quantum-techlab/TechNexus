@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { recommendCourse } from "@/ai/flows/course-recommendation-tool";
+import { recommendCourse } from "@/ai/flows/course-recommendation-engine";
 import { db, storage } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
