@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D97706;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#grad1)"/>
+  
+  <!-- Tech circuit pattern -->
+  <g stroke="white" stroke-width="2" fill="none" opacity="0.3">
+    <circle cx="30" cy="30" r="4"/>
+    <circle cx="70" cy="30" r="4"/>
+    <circle cx="30" cy="70" r="4"/>
+    <circle cx="70" cy="70" r="4"/>
+    <line x1="30" y1="30" x2="70" y2="30"/>
+    <line x1="30" y1="70" x2="70" y2="70"/>
+    <line x1="30" y1="30" x2="30" y2="70"/>
+    <line x1="70" y1="30" x2="70" y2="70"/>
+  </g>
+  
+  <!-- Main "T" letter with modern style -->
+  <g fill="white">
+    <path d="M 35 35 L 65 35 L 65 42 L 53 42 L 53 65 L 47 65 L 47 42 L 35 42 Z"/>
+  </g>
+  
+  <!-- Small "7" in corner -->
+  <text x="68" y="72" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">7</text>
+</svg>
