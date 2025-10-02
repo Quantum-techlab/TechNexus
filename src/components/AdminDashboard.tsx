@@ -3,7 +3,9 @@
 import { useState, useMemo, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
+import { auth, db, storage } from '@/lib/firebase';
 import type { Registration } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,7 +23,6 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
-import { deleteRegistration } from '@/app/actions';
 import { LogOut, ExternalLink, Search, Trash2 } from 'lucide-react';
 import { Logo } from './Logo';
 
@@ -68,23 +69,38 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
     if (!registrationToDelete) return;
 
     startTransition(async () => {
-        const result = await deleteRegistration(registrationToDelete.id, registrationToDelete.receiptUrl);
-        if (result.success) {
-            setRegistrations(prev => prev.filter(r => r.id !== registrationToDelete.id));
-            toast({
-                title: "Success",
-                description: result.message,
-                variant: 'success'
-            });
-        } else {
-            toast({
-                title: "Error",
-                description: result.message,
-                variant: "destructive"
-            });
+      try {
+        // Delete receipt from storage
+        if (registrationToDelete.receiptUrl) {
+          const storageRef = ref(storage, registrationToDelete.receiptUrl);
+          await deleteObject(storageRef);
         }
+        
+        // Delete document from firestore
+        await deleteDoc(doc(db, 'registrations', registrationToDelete.id));
+
+        setRegistrations(prev => prev.filter(r => r.id !== registrationToDelete.id));
+        toast({
+            title: "Success",
+            description: "Registration deleted successfully.",
+            variant: 'success'
+        });
+
+      } catch (error) {
+        console.error("Delete Error:", error);
+        let errorMessage = "An unknown error occurred during deletion.";
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        toast({
+            title: "Error",
+            description: `Deletion failed: ${errorMessage}`,
+            variant: "destructive"
+        });
+      } finally {
         setIsDeleteDialogOpen(false);
         setRegistrationToDelete(null);
+      }
     });
   };
 

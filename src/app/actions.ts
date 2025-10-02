@@ -3,8 +3,8 @@
 import { z } from "zod";
 import { recommendCourse } from "@/ai/flows/course-recommendation-engine";
 import { db, storage } from "@/lib/firebase";
-import { addDoc, collection, serverTimestamp, doc, deleteDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { revalidatePath } from "next/cache";
 
 const FormSchema = z.object({
@@ -91,36 +91,6 @@ export async function registerStudent(
         message: "Database Error: Failed to register student.", 
         success: false 
     };
-  }
-}
-
-export type DeleteState = {
-  success?: boolean;
-  message?: string;
-};
-
-export async function deleteRegistration(registrationId: string, receiptUrl: string): Promise<DeleteState> {
-  try {
-    // Delete receipt from storage
-    if (receiptUrl) {
-      // Create a reference from the full URL.
-      // This is the correct way to get a reference to a file when you only have the download URL.
-      const storageRef = ref(storage, receiptUrl);
-      await deleteObject(storageRef);
-    }
-    
-    // Delete document from firestore
-    await deleteDoc(doc(db, 'registrations', registrationId));
-
-    revalidatePath('/admin');
-    return { success: true, message: 'Registration deleted successfully.' };
-  } catch (error) {
-    console.error("Delete Error:", error);
-    let errorMessage = "An unknown error occurred during deletion.";
-    if (error instanceof Error) {
-        errorMessage = error.message;
-    }
-    return { success: false, message: `Deletion failed: ${errorMessage}` };
   }
 }
 
