@@ -18,6 +18,7 @@ import { Terminal, User, AtSign, Building, Hash, Phone, UploadCloud, BookOpenChe
 import { CourseRecommender } from "./CourseRecommender";
 import { Spinner } from "./ui/spinner";
 import { Label } from "./ui/label";
+import { motion } from "framer-motion";
 
 const TECH_COURSES = [
   "Web Development",
@@ -78,8 +79,27 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
     }
   };
 
+  const formVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 10, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   if (formState.success) {
     return (
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
         <Alert variant="success" className="flex flex-col items-center text-center p-8">
             <CheckCircle className="h-12 w-12 mb-4 text-primary" />
             <AlertTitle className="text-2xl font-bold">Registration Successful!</AlertTitle>
@@ -91,6 +111,7 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
                 Register Another Student
             </Button>
         </Alert>
+      </motion.div>
     );
   }
 
@@ -103,48 +124,55 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
 
       <CourseRecommender onCourseRecommended={setCourse} />
 
-      <form ref={formRef} action={formAction} className="space-y-6 mt-8">
-        <div className="space-y-2">
+      <motion.form 
+        ref={formRef} 
+        action={formAction} 
+        className="space-y-6 mt-8"
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants} className="space-y-2">
           <div className="relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input name="fullName" placeholder="Full Name" className="pl-10" />
           </div>
           {formState?.errors?.fullName && <p className="text-sm text-destructive">{formState.errors.fullName.join(', ')}</p>}
-        </div>
+        </motion.div>
         
-        <div className="space-y-2">
+        <motion.div variants={itemVariants} className="space-y-2">
             <div className="relative">
                 <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input name="department" placeholder="Department" className="pl-10" />
             </div>
             {formState?.errors?.department && <p className="text-sm text-destructive">{formState.errors.department.join(', ')}</p>}
-        </div>
+        </motion.div>
         
-        <div className="space-y-2">
+        <motion.div variants={itemVariants} className="space-y-2">
             <div className="relative">
                 <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input name="matricNumber" placeholder="Matric Number / Registration Number" className="pl-10" />
             </div>
             {formState?.errors?.matricNumber && <p className="text-sm text-destructive">{formState.errors.matricNumber.join(', ')}</p>}
-        </div>
+        </motion.div>
         
-        <div className="space-y-2">
+        <motion.div variants={itemVariants} className="space-y-2">
             <div className="relative">
                 <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input type="email" name="email" placeholder="Valid Email" className="pl-10" />
             </div>
             {formState?.errors?.email && <p className="text-sm text-destructive">{formState.errors.email.join(', ')}</p>}
-        </div>
+        </motion.div>
         
-        <div className="space-y-2">
+        <motion.div variants={itemVariants} className="space-y-2">
             <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input type="tel" name="whatsappNumber" placeholder="WhatsApp Number" className="pl-10" />
             </div>
             {formState?.errors?.whatsappNumber && <p className="text-sm text-destructive">{formState.errors.whatsappNumber.join(', ')}</p>}
-        </div>
+        </motion.div>
         
-        <div className="space-y-2">
+        <motion.div variants={itemVariants} className="space-y-2">
             <Select name="course" onValueChange={setCourse} value={course}>
                 <SelectTrigger>
                     <SelectValue placeholder="Select a Tech Course" />
@@ -158,9 +186,9 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
                 </SelectContent>
             </Select>
             {formState?.errors?.course && <p className="text-sm text-destructive">{formState.errors.course.join(', ')}</p>}
-        </div>
+        </motion.div>
         
-        <div className="space-y-2">
+        <motion.div variants={itemVariants} className="space-y-2">
             <Label htmlFor="receipt" className="cursor-pointer border-2 border-dashed border-muted-foreground/50 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-primary hover:bg-accent/10 transition-colors">
                 <UploadCloud className="w-10 h-10 text-muted-foreground mb-2" />
                 <span className="font-semibold text-primary">Upload Payment Receipt</span>
@@ -169,7 +197,7 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
             </Label>
             <Input id="receipt" name="receipt" type="file" className="sr-only" accept=".pdf,.jpeg,.jpg,.png" onChange={onFileChange}/>
             {formState?.errors?.receipt && <p className="text-sm text-destructive">{formState.errors.receipt.join(', ')}</p>}
-        </div>
+        </motion.div>
 
         {formState?.errors?._form && (
           <Alert variant="destructive">
@@ -179,8 +207,10 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
           </Alert>
         )}
 
-        <SubmitButton />
-      </form>
+        <motion.div variants={itemVariants}>
+          <SubmitButton />
+        </motion.div>
+      </motion.form>
     </>
   );
 }
