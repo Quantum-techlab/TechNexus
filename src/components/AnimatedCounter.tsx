@@ -13,8 +13,8 @@ export default function AnimatedCounter({ from, to }: AnimatedCounterProps) {
   const isInView = useInView(ref, { once: true });
   const motionValue = useMotionValue(from);
   const springValue = useSpring(motionValue, {
-    damping: 60,
-    stiffness: 100,
+    damping: 100,
+    stiffness: 30,
   });
 
   useEffect(() => {
