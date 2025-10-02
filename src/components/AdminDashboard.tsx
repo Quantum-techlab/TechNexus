@@ -101,7 +101,6 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
           toast({
               title: "Deletion Successful",
               description: `Registration for ${registrationToDelete.fullName} has been removed.`,
-              variant: 'success'
           });
         })
         .catch((error: any) => {
@@ -130,7 +129,7 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
   return (
     <>
       <div className="min-h-screen bg-muted/40">
-        <header className="bg-card border-b p-4 flex items-center justify-between">
+        <header className="bg-card border-b p-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <Logo className="h-8 w-8 text-primary" />
             <h1 className="text-xl font-bold font-headline">Admin Dashboard</h1>
@@ -141,8 +140,8 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
           </Button>
         </header>
 
-        <main className="p-4 md:p-8">
-          <div className="bg-card p-6 rounded-lg shadow-sm mb-6">
+        <main className="p-4 sm:p-6 md:p-8">
+          <div className="bg-card p-4 sm:p-6 rounded-lg shadow-sm mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -172,23 +171,26 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
             </div>
           </div>
 
-          <div className="bg-card p-6 rounded-lg shadow-sm">
-              <h2 className="text-lg font-semibold mb-4">Total Registrations: {filteredRegistrations.length}</h2>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Full Name</TableHead>
-                      <TableHead>Matric No.</TableHead>
-                      <TableHead>Department</TableHead>
-                      <TableHead>Course</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Receipt</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredRegistrations.map(reg => (
+          <div className="bg-card rounded-lg shadow-sm">
+            <div className="p-4 sm:p-6 border-b">
+              <h2 className="text-lg font-semibold">Total Registrations: {filteredRegistrations.length}</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Full Name</TableHead>
+                    <TableHead>Matric No.</TableHead>
+                    <TableHead>Department</TableHead>
+                    <TableHead>Course</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Receipt</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRegistrations.length > 0 ? (
+                    filteredRegistrations.map(reg => (
                       <TableRow key={reg.id}>
                         <TableCell className="font-medium">{reg.fullName}</TableCell>
                         <TableCell>{reg.matricNumber}</TableCell>
@@ -196,8 +198,8 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
                         <TableCell><Badge variant="secondary">{reg.course}</Badge></TableCell>
                         <TableCell>
                           <div className="flex flex-col text-sm">
-                            <span>{reg.email}</span>
-                            <span className="text-muted-foreground">{reg.whatsappNumber}</span>
+                            <a href={`mailto:${reg.email}`} className="hover:underline">{reg.email}</a>
+                            <a href={`https://wa.me/${reg.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:underline">{reg.whatsappNumber}</a>
                           </div>
                         </TableCell>
                         <TableCell>
@@ -214,10 +216,17 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
                           </Button>
                         </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    ))
+                  ) : (
+                    <TableRow>
+                        <TableCell colSpan={7} className="text-center text-muted-foreground py-12">
+                            No registrations found.
+                        </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         </main>
       </div>
