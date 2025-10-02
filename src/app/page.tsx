@@ -1,7 +1,7 @@
 import Header from '@/components/Header';
 import RegistrationForm from '@/components/RegistrationForm';
 import { Card, CardContent } from '@/components/ui/card';
-import { Lightbulb, Briefcase, TrendingUp, Laptop, Users } from 'lucide-react';
+import { Lightbulb, Briefcase, TrendingUp, Laptop, Users, Award } from 'lucide-react';
 
 
 export default function Home() {
@@ -10,6 +10,13 @@ export default function Home() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 w-full">
         <div className="max-w-3xl mx-auto">
+           <div className="mb-8 text-foreground p-6 rounded-lg bg-card border shadow-sm">
+            <h2 className="text-2xl font-bold font-headline text-primary mb-4 flex items-center gap-2"><Award /> A Legacy of Success: The 7th Edition</h2>
+            <p className="text-muted-foreground">
+              Welcome to the 7th Edition of TECHNEXus! For years, we have been dedicated to empowering students with the most in-demand tech skills. We are proud to have successfully trained and certified hundreds of students who have gone on to achieve great things in the tech industry. Join a legacy of excellence and start your journey today.
+            </p>
+          </div>
+
           <div className="mb-8 text-foreground p-6 rounded-lg bg-card border shadow-sm">
             <h2 className="text-2xl font-bold font-headline text-primary mb-4 flex items-center gap-2"><Lightbulb /> The Future is Tech</h2>
             <p className="mb-4 text-muted-foreground">
