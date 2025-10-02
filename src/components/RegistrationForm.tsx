@@ -84,7 +84,7 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
             <CheckCircle className="h-12 w-12 mb-4 text-primary" />
             <AlertTitle className="text-2xl font-bold">Registration Successful!</AlertTitle>
             <AlertDescription className="mt-2 max-w-prose">
-                {formState.message || "Thank you for registering for TECHNEXus 6.0. We've received your details."}
+                {formState.message || "Thank you for registering for TECHNEXus 7.0. We've received your details."}
             </AlertDescription>
             <Button onClick={onReset} className="mt-6">
                 <UserPlus className="mr-2 h-4 w-4" />
@@ -98,7 +98,7 @@ function RegistrationFormCore({ onReset }: { onReset: () => void }) {
     <>
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold font-headline text-primary">Student Registration</h1>
-        <p className="text-muted-foreground">Join the 6th Edition of TECHNEXus</p>
+        <p className="text-muted-foreground">Join the 7th Edition of TECHNEXus</p>
       </div>
 
       <CourseRecommender onCourseRecommended={setCourse} />

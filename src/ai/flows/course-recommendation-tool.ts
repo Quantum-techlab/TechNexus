@@ -34,7 +34,7 @@ const prompt = ai.definePrompt({
   output: {schema: RecommendCourseOutputSchema},
   prompt: `You are an AI assistant designed to recommend the most suitable tech course from the TECHNEXus program for students. TECHNEXus is an upskilling and learning program hosted by the Department of Information Technology, University of Ilorin.
 
-  Consider the student's interests and the current focus of the TECHNEXus 6th Edition when making your recommendation. The available courses are Web Development, Data Science, Cybersecurity, Cloud Computing, UI/UX, and AI/ML.
+  Consider the student's interests and the current focus of the TECHNEXus 7th Edition when making your recommendation. The available courses are Web Development, Data Science, Cybersecurity, Cloud Computing, UI/UX, and AI/ML.
 
   Student Interests: {{{interests}}}
 

@@ -12,14 +12,14 @@ export default function Header() {
             <Logo className="h-9 w-9 text-primary transition-transform group-hover:scale-110" />
             <div className="flex flex-col">
               <h1 className="text-xl font-bold font-headline text-foreground tracking-tight">
-                TECHNEXus 6.0
+                TECHNEXus 7.0
               </h1>
               <p className="text-xs text-muted-foreground">Registration Portal</p>
             </div>
           </Link>
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <h2 className="text-lg font-semibold font-headline text-accent">6th Edition TECHNEXus</h2>
+              <h2 className="text-lg font-semibold font-headline text-accent">7th Edition TECHNEXus</h2>
               <p className="text-sm text-muted-foreground">Upskilling & Learning for Students</p>
             </div>
             <Button asChild variant="outline">

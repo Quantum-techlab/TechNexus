@@ -12,7 +12,7 @@ export default function LoginPage() {
         <Card className="shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold font-headline">Admin Login</CardTitle>
-            <CardDescription>Technexus 6.0 Registration Portal</CardDescription>
+            <CardDescription>Technexus 7.0 Registration Portal</CardDescription>
           </CardHeader>
           <CardContent>
             <LoginForm />
