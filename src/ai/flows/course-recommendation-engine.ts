@@ -19,7 +19,7 @@ const RecommendCourseInputSchema = z.object({
 export type RecommendCourseInput = z.infer<typeof RecommendCourseInputSchema>;
 
 const RecommendCourseOutputSchema = z.object({
-  courseRecommendation: z.string().describe('The recommended course based on the student\'s interests and TECHNEXus edition focus.'),
+  courseRecommendation: z.string().describe("The recommended course based on the student's interests and TECHNEXus edition focus."),
   reasoning: z.string().describe('The reasoning behind the course recommendation.'),
 });
 export type RecommendCourseOutput = z.infer<typeof RecommendCourseOutputSchema>;
@@ -34,15 +34,15 @@ const prompt = ai.definePrompt({
   output: {schema: RecommendCourseOutputSchema},
   prompt: `You are an AI assistant designed to recommend the most suitable tech course from the TECHNEXus program for students. TECHNEXus is an upskilling and learning program hosted by the Department of Information Technology, University of Ilorin.
 
-  Consider the student\'s interests and the current focus of the TECHNEXus 7th Edition when making your recommendation. The available courses are Web Development, Data Science, Cybersecurity, Cloud Computing, UI/UX, and AI/ML.
+  Consider the student's interests and the current focus of the TECHNEXus 7th Edition when making your recommendation. The available courses are Web Development, Data Science, Cybersecurity, Cloud Computing, UI/UX, and AI/ML.
 
   Student Interests: {{{interests}}}
 
-  Given the student\'s interests, which course do you recommend and why?
+  Given the student's interests, which course do you recommend and why?
 
   Format your response as follows:
   Course Recommendation: [Recommended Course]
-  Reasoning: [Explanation of why this course is recommended based on the student\'s interests and TECHNEXus focus]`,
+  Reasoning: [Explanation of why this course is recommended based on the student's interests and TECHNEXus focus]`,
 });
 
 const recommendCourseFlow = ai.defineFlow(
