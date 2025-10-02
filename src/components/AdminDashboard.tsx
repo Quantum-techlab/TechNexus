@@ -25,6 +25,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { LogOut, ExternalLink, Search, Trash2 } from 'lucide-react';
 import { Logo } from './Logo';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 const TECH_COURSES = ["Web Development", "Data Science", "Cybersecurity", "Cloud Computing", "UI/UX", "AI/ML"];
 
@@ -69,38 +71,46 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
     if (!registrationToDelete) return;
 
     startTransition(async () => {
-      try {
-        // Delete receipt from storage
-        if (registrationToDelete.receiptUrl) {
-          const storageRef = ref(storage, registrationToDelete.receiptUrl);
-          await deleteObject(storageRef);
-        }
-        
-        // Delete document from firestore
-        await deleteDoc(doc(db, 'registrations', registrationToDelete.id));
+        try {
+            // Delete receipt from storage first
+            if (registrationToDelete.receiptUrl) {
+                const storageRef = ref(storage, registrationToDelete.receiptUrl);
+                await deleteObject(storageRef);
+            }
+            
+            // Then, delete document from firestore
+            const docRef = doc(db, 'registrations', registrationToDelete.id);
+            
+            deleteDoc(docRef).catch(async (serverError) => {
+                const permissionError = new FirestorePermissionError({
+                    path: docRef.path,
+                    operation: 'delete',
+                });
+                errorEmitter.emit('permission-error', permissionError);
+            });
 
-        setRegistrations(prev => prev.filter(r => r.id !== registrationToDelete.id));
-        toast({
-            title: "Success",
-            description: "Registration deleted successfully.",
-            variant: 'success'
-        });
+            setRegistrations(prev => prev.filter(r => r.id !== registrationToDelete.id));
+            toast({
+                title: "Deletion Initiated",
+                description: "The registration is being removed.",
+                variant: 'success'
+            });
 
-      } catch (error) {
-        console.error("Delete Error:", error);
-        let errorMessage = "An unknown error occurred during deletion.";
-        if (error instanceof Error) {
-            errorMessage = error.message;
+        } catch (error) {
+            console.error("Storage Delete Error:", error);
+            let errorMessage = "An unknown error occurred during storage deletion.";
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+            toast({
+                title: "Error",
+                description: `Storage deletion failed: ${errorMessage}`,
+                variant: "destructive"
+            });
+        } finally {
+            setIsDeleteDialogOpen(false);
+            setRegistrationToDelete(null);
         }
-        toast({
-            title: "Error",
-            description: `Deletion failed: ${errorMessage}`,
-            variant: "destructive"
-        });
-      } finally {
-        setIsDeleteDialogOpen(false);
-        setRegistrationToDelete(null);
-      }
     });
   };
 
