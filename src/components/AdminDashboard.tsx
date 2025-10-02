@@ -74,39 +74,52 @@ export default function AdminDashboard({ initialRegistrations }: { initialRegist
         try {
             // Delete receipt from storage first
             if (registrationToDelete.receiptUrl) {
-                const storageRef = ref(storage, registrationToDelete.receiptUrl);
-                await deleteObject(storageRef);
+                try {
+                    const storageRef = ref(storage, registrationToDelete.receiptUrl);
+                    await deleteObject(storageRef);
+                } catch (error: any) {
+                    // If the object doesn't exist, we can ignore the error and proceed.
+                    if (error.code !== 'storage/object-not-found') {
+                        // For any other storage error, we should log it and notify the user.
+                        console.error("Storage Delete Error:", error);
+                        toast({
+                            title: "Storage Error",
+                            description: `Failed to delete receipt: ${error.message}`,
+                            variant: "destructive"
+                        });
+                        // Depending on the desired behavior, we might want to stop here.
+                        // For this case, we'll allow Firestore deletion to proceed.
+                    }
+                }
             }
             
             // Then, delete document from firestore
             const docRef = doc(db, 'registrations', registrationToDelete.id);
             
-            deleteDoc(docRef).catch(async (serverError) => {
-                const permissionError = new FirestorePermissionError({
-                    path: docRef.path,
-                    operation: 'delete',
-                });
-                errorEmitter.emit('permission-error', permissionError);
-            });
+            await deleteDoc(docRef);
 
-            setRegistrations(prev => prev.filter(r => r.id !== registrationToDelete.id));
+            setRegistrations(prev => prev.filter(r => r.id !== registrationToDelete!.id));
             toast({
-                title: "Deletion Initiated",
-                description: "The registration is being removed.",
+                title: "Deletion Successful",
+                description: `Registration for ${registrationToDelete.fullName} has been removed.`,
                 variant: 'success'
             });
 
-        } catch (error) {
-            console.error("Storage Delete Error:", error);
-            let errorMessage = "An unknown error occurred during storage deletion.";
-            if (error instanceof Error) {
-                errorMessage = error.message;
+        } catch (error: any) {
+            console.error("Firestore Delete Error:", error);
+            if (error.code === 'permission-denied') {
+                const permissionError = new FirestorePermissionError({
+                    path: `registrations/${registrationToDelete.id}`,
+                    operation: 'delete',
+                });
+                errorEmitter.emit('permission-error', permissionError);
+            } else {
+                 toast({
+                    title: "Error",
+                    description: `Failed to delete registration: ${error.message}`,
+                    variant: "destructive"
+                });
             }
-            toast({
-                title: "Error",
-                description: `Storage deletion failed: ${errorMessage}`,
-                variant: "destructive"
-            });
         } finally {
             setIsDeleteDialogOpen(false);
             setRegistrationToDelete(null);
