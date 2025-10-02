@@ -1,0 +1,15 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow write access to the receipts folder for anyone
+    match /receipts/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // Deny read/write access to all other paths
+    match /{allPaths=**} {
+       allow read, write: if false;
+    }
+  }
+}
