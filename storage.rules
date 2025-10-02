@@ -1,15 +1,12 @@
 rules_version = '2';
-
 service firebase.storage {
   match /b/{bucket}/o {
-    // Allow write access to the receipts folder for anyone
+    // Allow uploads of receipts (images/pdfs under 5MB)
+    // and allow public read for admins to view them.
     match /receipts/{allPaths=**} {
-      allow read, write: if true;
-    }
-    
-    // Deny read/write access to all other paths
-    match /{allPaths=**} {
-       allow read, write: if false;
+      allow read;
+      allow write: if request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*|application/pdf');
     }
   }
 }
