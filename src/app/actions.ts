@@ -103,6 +103,8 @@ export async function deleteRegistration(registrationId: string, receiptUrl: str
   try {
     // Delete receipt from storage
     if (receiptUrl) {
+      // Create a reference from the full URL.
+      // This is the correct way to get a reference to a file when you only have the download URL.
       const storageRef = ref(storage, receiptUrl);
       await deleteObject(storageRef);
     }
